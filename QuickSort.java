@@ -29,11 +29,39 @@ class QuickSort{
         exchange(A,r,randomIndex);
         return partition(A,p,r);
     }
+    public static int[] partitionModified(int[] A,int p, int r){
+        int x = A[p];
+        int low = p;
+        int high = p;
+        int y;
+        for (int j = p + 1;j<=r;j++){
+            if (A[j] < x){
+                y = A[j];
+                A[j] = A[high + 1];
+                A[high + 1] = A[low];
+                A[low] = y;
+                low = low + 1;
+                high = high + 1;
+            }else if (A[j] == x){
+                exchange (A,high+1,j);
+                high = high + 1;
+            }
+        }
+        return new int[]{low, high};
+    }
+
     public static void quickSortAlgo(int[] A,int p,int r){
         if (p < r){
             int q = partition(A,p,r);
             quickSortAlgo(A,p,q-1);
             quickSortAlgo(A,q+1,r);
+        } 
+    }
+    public static void modifiedQuickSortAlgo(int[] A,int p,int r){
+        if (p < r){
+            int[] pivot = partitionModified(A,p,r);
+            quickSortAlgo(A,p,pivot[0]-1);
+            quickSortAlgo(A,pivot[1]+1,r);
         } 
     }
     public static void randomizedQuickSortAlgo(int[] A,int p,int r){
@@ -66,7 +94,7 @@ class QuickSort{
         BufferedReader bw = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Enter number to sort space seperated");
         int[] input_arr = Stream.of(bw.readLine().split("\\s+")).mapToInt(Integer::parseInt).toArray();
-        modifiedTailRecursiveQuickSortAlgo(input_arr,0,input_arr.length-1);
+        modifiedQuickSortAlgo(input_arr,0,input_arr.length-1);
         System.out.println(Arrays.toString(input_arr));
     }  
 }
