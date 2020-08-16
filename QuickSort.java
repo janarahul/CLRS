@@ -43,11 +43,30 @@ class QuickSort{
             randomizedQuickSortAlgo(A,q+1,r);
         } 
     }
+    public static void tailRecursiveQuickSortAlgo(int[] A,int p,int r){
+        while (p < r){
+            int q = randomPartition(A,p,r);
+            tailRecursiveQuickSortAlgo(A,p,q-1);
+            p = q+1;
+        } 
+    }
+    public static void modifiedTailRecursiveQuickSortAlgo(int[] A,int p,int r){
+        while (p < r){
+            int q = randomPartition(A,p,r);
+            if(q < (p+r)/2){
+                tailRecursiveQuickSortAlgo(A,p,q-1);
+                p = q+1;
+            }else{
+                tailRecursiveQuickSortAlgo(A,q+1,r);
+                r = q-1;
+            }
+        } 
+    }
     public static void main(String args[]) throws IOException {
         BufferedReader bw = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Enter number to sort space seperated");
         int[] input_arr = Stream.of(bw.readLine().split("\\s+")).mapToInt(Integer::parseInt).toArray();
-        randomizedQuickSortAlgo(input_arr,0,input_arr.length-1);
+        modifiedTailRecursiveQuickSortAlgo(input_arr,0,input_arr.length-1);
         System.out.println(Arrays.toString(input_arr));
     }  
 }
