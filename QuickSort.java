@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.stream.*;
 import java.io.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 class QuickSort{
 
@@ -23,6 +24,11 @@ class QuickSort{
         exchange(A,r,i+1);
         return i+1;
     }
+    public static int randomPartition(int[] A,int p, int r){
+        int randomIndex = ThreadLocalRandom.current().nextInt(p,r+1);
+        exchange(A,r,randomIndex);
+        return partition(A,p,r);
+    }
     public static void quickSortAlgo(int[] A,int p,int r){
         if (p < r){
             int q = partition(A,p,r);
@@ -30,11 +36,18 @@ class QuickSort{
             quickSortAlgo(A,q+1,r);
         } 
     }
+    public static void randomizedQuickSortAlgo(int[] A,int p,int r){
+        if (p < r){
+            int q = randomPartition(A,p,r);
+            randomizedQuickSortAlgo(A,p,q-1);
+            randomizedQuickSortAlgo(A,q+1,r);
+        } 
+    }
     public static void main(String args[]) throws IOException {
         BufferedReader bw = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Enter number to sort space seperated");
         int[] input_arr = Stream.of(bw.readLine().split("\\s+")).mapToInt(Integer::parseInt).toArray();
-        quickSortAlgo(input_arr,0,input_arr.length-1);
+        randomizedQuickSortAlgo(input_arr,0,input_arr.length-1);
         System.out.println(Arrays.toString(input_arr));
     }  
 }
