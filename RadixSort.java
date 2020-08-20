@@ -5,11 +5,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 class RadixSort{
 
-    public static int getMeNthElement(int number,int n){
+    public static int getMeNthDigit(int number,int n){
         if(n == 1){
             return number%10; 
         }
-        return getMeNthElement(number/10,n-1);
+        return getMeNthDigit(number/10,n-1);
     }
     public static void CountingSort(int[] A,int n){
         int[] helper_arr = new int[10];
@@ -19,15 +19,15 @@ class RadixSort{
             helper_arr[i] = 0;
         }
         for(int j=0;j<A.length;j++){
-            helper_arr[getMeNthElement(A[j],n)] = helper_arr[getMeNthElement(A[j],n)] + 1;
+            helper_arr[getMeNthDigit(A[j],n)] = helper_arr[getMeNthDigit(A[j],n)] + 1;
         }
         for(int i =1;i<=9;i++){
             helper_arr[i] = helper_arr[i] + helper_arr[i-1];
         }
 
         for(int j=A.length-1;j>=0;j--){
-            output[helper_arr[getMeNthElement(A[j],n)]-1] = A[j]; //-1 as arrays start at 0
-            helper_arr[getMeNthElement(A[j],n)] = helper_arr[getMeNthElement(A[j],n)] -1;
+            output[helper_arr[getMeNthDigit(A[j],n)]-1] = A[j]; //-1 as arrays start at 0
+            helper_arr[getMeNthDigit(A[j],n)] = helper_arr[getMeNthDigit(A[j],n)] -1;
         }
         System.arraycopy(output, 0, A, 0, A.length);
     }
